@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///Users/diegoalves/Documents/01%20-%20Diego/05%20-%20Dev%20Sistemas/04%20-%20Vertra-Plataform/frontend/app/layout.tsx"],"sourcesContent":["import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from \"@clerk/nextjs\";\nimport \"./globals.css\";\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <ClerkProvider>\n          <header>\n            <Show when=\"signed-out\">\n              <SignInButton />\n              <SignUpButton />\n            </Show>\n            <Show when=\"signed-in\">\n              <UserButton />\n            </Show>\n          </header>\n          {children}\n        </ClerkProvider>\n      </body>\n    </html>\n  );\n}"],"names":["RootLayout","children","lang","when"],"mappings":";;;;;AAAA;AAAA;;;;AAGe,SAASA,WAAW,EAAEC,QAAQ,EAAiC;IAC5E,qBACE,8OAAC;QAAKC,MAAK;kBACT,cAAA,8OAAC;sBACC,cAAA,8OAAC,0LAAa;;kCACZ,8OAAC;;0CACC,8OAAC,iLAAI;gCAACC,MAAK;;kDACT,8OAAC,sMAAY;;;;;kDACb,8OAAC,sMAAY;;;;;;;;;;;0CAEf,8OAAC,iLAAI;gCAACA,MAAK;0CACT,cAAA,8OAAC,oMAAU;;;;;;;;;;;;;;;;oBAGdF;;;;;;;;;;;;;;;;;AAKX"}}]
+}

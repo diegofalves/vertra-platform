@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///Users/diegoalves/Documents/01%20-%20Diego/05%20-%20Dev%20Sistemas/04%20-%20Vertra-Plataform/frontend/app/page.tsx"],"sourcesContent":["export default function Home() {\n  return (\n    <main>\n      <h1>Vertra Platform</h1>\n    </main>\n  );\n}"],"names":["Home"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;AAGV"}}]
+}
