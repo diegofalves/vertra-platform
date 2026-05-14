@@ -1,13 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from app.services.google_maps import get_coordinates
 
-from app.models.schemas import GeocodeRequest, GeocodeResponse
-from app.services.google_maps import GoogleMapsService
+router = APIRouter()
 
+class AddressRequest(BaseModel):
+    address: str
 
-router = APIRouter(prefix="/geocoding", tags=["Geocoding"])
-google_maps_service = GoogleMapsService()
-
-
-@router.post("", response_model=GeocodeResponse)
-async def geocode_address(payload: GeocodeRequest) -> GeocodeResponse:
-	return await google_maps_service.geocode_address(payload.address)
+@router.post("/geocode")
+async def geocode(request: AddressRequest):
+    result = await get_coordinates(request.address)
+    if not result:
+        raise HTTPException(status_code=404, detail="Endereço não encontrado")
+    return result

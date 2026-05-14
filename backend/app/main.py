@@ -1,22 +1,10 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
 from app.api.routes.geocoding import router as geocoding_router
 
+app = FastAPI(title="Vertra API")
 
-app = FastAPI(title="Vertra Platform API", version="1.0.0")
+app.include_router(geocoding_router, prefix="/api/v1", tags=["geocoding"])
 
-app.add_middleware(
-	CORSMiddleware,
-	allow_origins=["*"],
-	allow_credentials=True,
-	allow_methods=["*"],
-	allow_headers=["*"],
-)
-
-app.include_router(geocoding_router, prefix="/api")
-
-
-@app.get("/health")
-async def health_check() -> dict[str, str]:
-	return {"status": "ok"}
+@app.get("/")
+async def root():
+    return {"message": "Vertra API rodando"}

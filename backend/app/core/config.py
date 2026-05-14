@@ -1,19 +1,7 @@
-from functools import lru_cache
-from os import getenv
+from dotenv import load_dotenv
+import os
 
-from pydantic import BaseModel
+load_dotenv()
 
-
-class Settings(BaseModel):
-	database_url: str | None = None
-	clerk_secret_key: str | None = None
-	google_maps_api_key: str | None = None
-
-
-@lru_cache
-def get_settings() -> Settings:
-	return Settings(
-		database_url=getenv("DATABASE_URL"),
-		clerk_secret_key=getenv("CLERK_SECRET_KEY"),
-		google_maps_api_key=getenv("GOOGLE_MAPS_API_KEY"),
-	)
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
