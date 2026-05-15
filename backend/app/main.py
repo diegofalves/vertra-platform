@@ -25,6 +25,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://vertrasolutions.com.br",
         "https://www.vertrasolutions.com.br",
+        "https://api.vertrasolutions.com.br",
     ],
     allow_credentials=True,
     allow_methods=["*"],
