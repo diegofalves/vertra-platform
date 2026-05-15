@@ -36,3 +36,8 @@ app.include_router(shipments_router, prefix="/api/v1", tags=["shipments"])
 @app.get("/")
 async def root():
     return {"message": "Vertra API rodando"}
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
