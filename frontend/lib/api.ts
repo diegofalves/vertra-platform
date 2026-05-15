@@ -13,10 +13,6 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface Client {
   id: string;
   organization_id: string;
@@ -119,10 +115,6 @@ export interface GeocodeResponse {
   source: string;
 }
 
-// ---------------------------------------------------------------------------
-// Clients
-// ---------------------------------------------------------------------------
-
 export const fetchClients = (organizationId: string): Promise<Client[]> =>
   request(`/api/v1/clients?organization_id=${organizationId}`);
 
@@ -134,10 +126,6 @@ export const updateClient = (id: string, data: ClientUpdate): Promise<Client> =>
 
 export const deleteClient = (id: string): Promise<void> =>
   request(`/api/v1/clients/${id}`, { method: "DELETE" });
-
-// ---------------------------------------------------------------------------
-// Projects
-// ---------------------------------------------------------------------------
 
 export const fetchProjects = (organizationId: string, clientId?: string): Promise<Project[]> => {
   const qs = clientId
@@ -155,10 +143,6 @@ export const updateProject = (id: string, data: ProjectUpdate): Promise<Project>
 export const deleteProject = (id: string): Promise<void> =>
   request(`/api/v1/projects/${id}`, { method: "DELETE" });
 
-// ---------------------------------------------------------------------------
-// Shipments
-// ---------------------------------------------------------------------------
-
 export const fetchShipments = (projectId: string): Promise<ShipmentRecord[]> =>
   request(`/api/v1/projects/${projectId}/shipments`);
 
@@ -167,10 +151,6 @@ export const createShipment = (projectId: string, data: Partial<ShipmentRecord>)
 
 export const bulkImportShipments = (projectId: string, records: Partial<ShipmentRecord>[]): Promise<{ inserted: number; failed: number; total: number }> =>
   request(`/api/v1/projects/${projectId}/shipments/bulk`, { method: "POST", body: JSON.stringify(records) });
-
-// ---------------------------------------------------------------------------
-// Geocoding
-// ---------------------------------------------------------------------------
 
 export const geocodeAddress = (address: string): Promise<GeocodeResponse> =>
   request("/api/v1/geocode", { method: "POST", body: JSON.stringify({ address }) });
