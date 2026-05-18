@@ -298,9 +298,9 @@ export function FieldSelect({ label, value, onChange, options, required }: {
 // ---------------------------------------------------------------------------
 // Buttons
 // ---------------------------------------------------------------------------
-export function BtnPrimary({ children, onClick, disabled, style = {} }: { children: ReactNode; onClick?: () => void; disabled?: boolean; style?: CSSProperties }) {
+export function BtnPrimary({ children, onClick, disabled, style = {}, type = "button" }: { children: ReactNode; onClick?: () => void; disabled?: boolean; style?: CSSProperties; type?: "button" | "submit" | "reset" }) {
   return (
-    <button onClick={onClick} disabled={disabled} style={{
+    <button type={type} onClick={onClick} disabled={disabled} style={{
       background: disabled ? "#A8D4CD" : "linear-gradient(135deg,#4A9B8E,#3A8578)",
       color: "#fff", border: "none", borderRadius: 8, padding: "10px 22px",
       fontFamily: "Outfit, sans-serif", fontWeight: 600, fontSize: 14,

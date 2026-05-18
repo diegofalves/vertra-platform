@@ -51,7 +51,7 @@ export default function LoginPage() {
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <span style={{ fontSize: 12, color: "#4A9B8E", cursor: "pointer", fontFamily: "Outfit, sans-serif" }}>Esqueci minha senha</span>
           </div>
-          <BtnPrimary style={{ width: "100%", padding: "12px", marginTop: 4, fontSize: 15 }} disabled={loading}>
+          <BtnPrimary type="submit" style={{ width: "100%", padding: "12px", marginTop: 4, fontSize: 15 }} disabled={loading}>
             {loading ? "Entrando…" : "Entrar"}
           </BtnPrimary>
         </form>
