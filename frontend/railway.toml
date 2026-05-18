@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "npm run build"
 
 [deploy]
-startCommand = "PORT=3000 node --trace-uncaught .next/standalone/server.js"
+startCommand = "HOSTNAME=0.0.0.0 node --trace-uncaught .next/standalone/server.js"
 healthcheckPath = "/api/health"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
