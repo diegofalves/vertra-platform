@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm run build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public"
+buildCommand = "npm run build && cp -r .next/static .next/standalone/.next/static && (cp -r public .next/standalone/public 2>/dev/null || true)"
 
 [deploy]
 startCommand = "HOSTNAME=0.0.0.0 node --trace-uncaught .next/standalone/server.js"
