@@ -1,25 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Badge, C, Card, PageBody, PageContent, TableHeader, TableRow, TD, TopBar } from "@/components/vertra";
+import { Client, fetchClients, fetchProjects, Project } from "@/lib/api";
 
-const STATS = [
-  { label: "Clientes Ativos",   value: "24",    delta: "+3 este mês",        color: "#4A9B8E" },
-  { label: "Projetos em Curso", value: "11",    delta: "2 finalizados",       color: "#2B7A8A" },
-  { label: "NFs Importadas",    value: "1.847", delta: "+312 esta semana",    color: "#3D6B7A" },
-  { label: "Taxa de Entrega",   value: "94%",   delta: "+1.2% vs mês ant.",   color: "#1E8A6E" },
-];
-
-const RECENT = [
-  { project: "Logística SP — Mai/25", client: "Mercatto Atacado", nfs: 312, status: "active",    date: "12/05/2025" },
-  { project: "Distribuição Sul Q2",   client: "TechDist Ltda",    nfs: 88,  status: "active",    date: "10/05/2025" },
-  { project: "Rota Interior Jan/25",  client: "Agro Brasil S.A.", nfs: 540, status: "completed", date: "28/01/2025" },
-  { project: "Urbano RJ — Abr",       client: "CityLog Rio",      nfs: 201, status: "paused",    date: "30/04/2025" },
-  { project: "Cross SP–MG Mar",       client: "Mercatto Atacado", nfs: 177, status: "completed", date: "31/03/2025" },
-];
+const ORGANIZATION_ID = process.env.NEXT_PUBLIC_ORGANIZATION_ID ?? "";
 
 export default function PainelPage() {
   const today = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+
+  const [clients, setClients] = useState<Client[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([fetchClients(ORGANIZATION_ID), fetchProjects(ORGANIZATION_ID)])
+      .then(([c, p]) => { setClients(c); setProjects(p); })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const activeClients = clients.filter((c) => c.active).length;
+  const activeProjects = projects.filter((p) => p.status === "active").length;
+  const completedProjects = projects.filter((p) => p.status === "completed").length;
+
+  const STATS = [
+    { label: "Clientes Ativos",   value: loading ? "—" : String(activeClients),   delta: `${clients.length} total`,             color: "#4A9B8E" },
+    { label: "Projetos em Curso", value: loading ? "—" : String(activeProjects),   delta: `${completedProjects} finalizados`,     color: "#2B7A8A" },
+    { label: "NFs Importadas",    value: "—",                                       delta: "em breve",                            color: "#3D6B7A" },
+    { label: "Taxa de Entrega",   value: "—",                                       delta: "em breve",                            color: "#1E8A6E" },
+  ];
+
+  const recent = [...projects]
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+    .slice(0, 5);
 
   return (
     <PageBody>
@@ -44,15 +58,18 @@ export default function PainelPage() {
             <Link href="/projetos" style={{ fontFamily: "Outfit, sans-serif", fontSize: 12, color: C.teal, fontWeight: 600, textDecoration: "none" }}>Ver todos →</Link>
           </div>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <TableHeader cols={["Projeto", "Cliente", "NFs", "Status", "Última atualização"]} />
+            <TableHeader cols={["Projeto", "Cliente", "Status", "Última atualização"]} />
             <tbody>
-              {RECENT.map((r, i) => (
-                <TableRow key={i}>
-                  <TD primary>{r.project}</TD>
-                  <TD>{r.client}</TD>
-                  <TD>{r.nfs.toLocaleString("pt-BR")}</TD>
+              {loading ? (
+                <tr><td colSpan={4} style={{ padding: 48, textAlign: "center", color: C.textFaint, fontFamily: "Outfit, sans-serif", fontSize: 14 }}>Carregando…</td></tr>
+              ) : recent.length === 0 ? (
+                <tr><td colSpan={4} style={{ padding: 48, textAlign: "center", color: C.textFaint, fontFamily: "Outfit, sans-serif", fontSize: 14 }}>Nenhum projeto ainda.</td></tr>
+              ) : recent.map((r) => (
+                <TableRow key={r.id}>
+                  <TD primary>{r.name}</TD>
+                  <TD>{r.client_name ?? "—"}</TD>
                   <TD><Badge status={r.status} /></TD>
-                  <TD muted>{r.date}</TD>
+                  <TD muted>{new Date(r.updated_at).toLocaleDateString("pt-BR")}</TD>
                 </TableRow>
               ))}
             </tbody>
